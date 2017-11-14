@@ -1,0 +1,10 @@
+#!/bin/bash
+VENVS_CURRENT=`{{ homedir }}/pyenv virtualenvs | cut -f 3 -d ' ' | grep -v '/'`
+VENVS_JSON=`for f in "${VENVS_CURRENT[@]}"; do printf '%s' "$f" | jq -R -s .; done | jq -s .`
+
+cat <<EOF
+{
+    "current_venvs":
+        []
+}
+EOF

@@ -1,0 +1,27 @@
+#- name: Ensure custom facts directory exists.
+#  file: >
+#    path=/etc/ansible/facts.d
+#    recurse=yes
+#    state=directory
+
+#- name: Install custom fact for virtualenvs.
+#  template:
+#    src: current_venvs.sh.j2
+#    dest: /etc/ansible/facts.d/current_venvs.fact
+#    mode: 0755
+
+#- name: Reload ansible_local
+#  setup: filter=ansible_local
+
+#- name: Remove existing virtualenvs
+#  shell: "{{ homedir }}/bin/pyenv virtualenv "
+#  with_items: "{{ ansible_local.current_venvs }}"
+
+- name: Set up virtualenvs
+  shell: "[ ! -d {{ homedir }}/versions/{{ item.name }} ] && {{ homedir }}/bin/pyenv virtualenv {{ item.version }} {{ item.name }} || :"
+  environment:
+    pyenv_root: "{{ homedir }}"
+    path: "{{ homedir }}/bin:$PATH"
+  become: yes
+  become_user: "{{ pyenv_user }}"
+  with_items: "{{ virtualenvs }}"

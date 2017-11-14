@@ -1,0 +1,16 @@
+---
+- hosts: 172.20.42.6
+  remote_user: root
+  become: yes
+  tasks:
+    - include_role:
+        name: richardhofman.pyenv
+      vars:
+        pyenv_user: richard
+        versions:
+          - 2.7.5
+          - 3.4.3
+        global_default: 3.4.3
+        setup_virtualenvs: true
+        virtualenvs:
+          - {'name': 'test-ansible-env', 'version': '2.7.5'}

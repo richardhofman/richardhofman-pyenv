@@ -1,0 +1,52 @@
+---
+# tasks file for richardhofman.pyenv
+- name: Ensure pyenv user exists.
+  user:
+    name: "{{ pyenv_user }}"
+
+- name: Install pyenv.
+  git: >
+    repo=https://github.com/yyuu/pyenv.git
+    dest={{ homedir }}
+    accept_hostkey=yes
+    become: yes
+    become_user: "{{ pyenv_user }}"
+
+- name: Install pyenv-virtualenv.
+  git: >
+    repo=https://github.com/pyenv/pyenv-virtualenv.git
+    dest={{ homedir }}/plugins/pyenv-virtualenv
+    accept_hostkey=yes
+    become: yes
+    become_user: {{ pyenv_user }}
+  when: install_virtualenv
+
+- name: Ensure correct permissions on pyenv root directory.
+  file:
+    path: "{{ homedir }}"
+    owner: "{{ pyenv_user }}"
+    mode: "0755"
+    state: directory
+
+- name: Enable pyenv.
+  blockinfile:
+    path: "/home/{{ pyenv_user }}/.bashrc"
+    block: |
+      export PYENV_ROOT="{{ homedir }}"
+      export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)"
+
+- name: Install Python versions.
+  shell: |
+    eval "$({{ homedir }}/bin/pyenv init -)"
+    [ ! -d {{ homedir }}/versions/{{ item }} ] && {{ homedir }}/bin/pyenv install {{ item }} chdir=/home/{{ pyenv_user }} || :
+  environment:
+    pyenv_root: "{{ homedir }}"
+    path: "{{ homedir }}/bin:$PATH"
+  become: yes
+  become_user: "{{ pyenv_user }}"
+  with_items: "{{ versions }}"
+
+- include_tasks: virtualenv.yml
+  when: setup_virtualenvs
+

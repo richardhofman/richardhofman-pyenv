@@ -1,0 +1,4 @@
+---
+# defaults file for richardhofman.pyenv
+homedir: "/home/{{ pyenv_user }}/.pyenv"
+install_virtualenv: true
