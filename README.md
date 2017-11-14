@@ -12,13 +12,13 @@ N/A
 Role Variables
 --------------
 
-`install_virtualenv`: if true, `pyenv-virtualenv` will be installed.
-`setup_virtualenvs`: if true, virtualenvs specified in `virtualenvs` will be created.
-`virtualenvs`: a list of dictionaries of the form {name: Name_of_vEnv, version: python_version} representing virtualenvs that should be present.
-`homedir`: pyenv home directory - by default it is within the user's home directory.
-`pyenv_user`: user account to configure for pyenv.
-`versions`: list of Python versions to install.
-`global_default`: default global Python version to use.
+* `install_virtualenv`: if true, `pyenv-virtualenv` will be installed.
+* `setup_virtualenvs`: if true, virtualenvs specified in `virtualenvs` will be created.
+* `virtualenvs`: a list of dictionaries of the form {name: Name_of_vEnv, version: python_version} representing virtualenvs that should be present.
+* `homedir`: pyenv home directory - by default it is within the user's home directory.
+* `pyenv_user`: user account to configure for pyenv.
+* `versions`: list of Python versions to install.
+* `global_default`: default global Python version to use.
 
 Dependencies
 ------------
