@@ -39,7 +39,7 @@
 - name: Install Python versions.
   shell: |
     eval "$({{ homedir }}/bin/pyenv init -)"
-    [ ! -d {{ homedir }}/versions/{{ item }} ] && {{ homedir }}/bin/pyenv install {{ item }} chdir=/home/{{ pyenv_user }} || :
+    [ ! -d {{ homedir }}/versions/{{ item }} ] && {{ homedir }}/bin/pyenv install {{ item }} || :
   environment:
     pyenv_root: "{{ homedir }}"
     path: "{{ homedir }}/bin:$PATH"
